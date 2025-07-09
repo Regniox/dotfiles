@@ -1,0 +1,11 @@
+*
+!*/
+
+!.gitignore
+!README.md
+
+!hypr/**
+!waybar/**
+!gtk-3.0/**
+!fuzzel/**
+!mako/**
