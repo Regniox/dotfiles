@@ -31,12 +31,24 @@
 
   "hyprland/workspaces": {
     "on-click": "activate",
-    "format": "{id}",
+    "format": "{icon}",
     "all-outputs": true,
     "persistent-workspaces": {
       "1": [],
       "2": [],
       "3": []
+    },
+    "format-icons": {
+      "1": "壹",
+      "2": "贰",
+      "3": "叁",
+      "4": "肆",
+      "5": "伍",
+      "6": "陆",
+      "7": "柒",
+      "8": "捌",
+      "9": "玖",
+      "10": "拾"
     },
     "disable-scroll": false,
     "active-only": false
@@ -107,7 +119,7 @@
     "format": "{icon} {capacity}%",
     "format-charging": "󰂄 {capacity}% (Charging)",
     "format-plugged": "󰂃 {capacity}% (Plugged)",
-    "format-icons": ["󱊡", "󱊢", "󱊣"],
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
   },
 
   "custom/power": {
