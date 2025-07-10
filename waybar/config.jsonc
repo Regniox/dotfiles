@@ -104,9 +104,10 @@
       "warning": 30,
       "critical": 5
     },
-    "format": "󱈏 {capacity}%",
+    "format": "{icon} {capacity}%",
     "format-charging": "󰂄 {capacity}% (Charging)",
-    "format-plugged": "󰂃 {capacity}% (Plugged)"
+    "format-plugged": "󰂃 {capacity}% (Plugged)",
+    "format-icons": ["󱊡", "󱊢", "󱊣"],
   },
 
   "custom/power": {
