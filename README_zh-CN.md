@@ -1,12 +1,167 @@
 # 我的 Arch Linux 配置
+
+## Install Arch Linux
+
+安装过程请参考 [Arch Linux Wiki]("https://wiki.archlinux.org/title/Installation_guide")，下面仅供安装参考。
+
+### 系统引导
+
+1. 安装 `pacman -S grub efibootmgr os-prober`
+2. 按照下面操作
+
+```Shell
+mkdir -r /boot/grub
+grub-mkconfig > /boot/grub/grub.cfg
+grub-install --target=x86_64 efi-directory=/boot --boottloader-id=GRUB
+```
+
+### 创建用户
+
+因为 Hyprland 要普通用户才可以启动，所以我要先创建一个普通用户并且设置密码。
+
+```Shell
+useradd -m [UserName]
+passwd [UserName]
+```
+
+### 输入法
+
+```Shell
+sudo pacman -S fcitx5-im fcitx5-rime rime-luna-pinyin
+```
+
+编辑 `/etc/environment` 添加以下内容：
+
+```
+GTK_IM_MODULE=fcitx
+QT_IM_MODULE=fcitx
+XMODIFIERS=@im=fcitx
+SDL_IM_MODULE=fcitx
+```
+
+### 声音驱动
+
+1. 安装驱动：`sudo pacman -S pipwire pipwire-audio pipwire-alsa pipwire-pulse pipwire-jack pipwire-media-session`
+2. 安装图形化管理器：`sudo pacman -S pavucontrol`
+
+### OBS-Studio
+
+`sudo pacman -S obs-studio xdg-desktop-portal xdg-desktop-portal-hyprland`
+
+### Dae 代理
+
+1. 编辑 `/etc/pacman.conf` 添加 `Archlinuxcn`
+
+```conf
+[archlinuxcn]
+Server = https//mirrors.ustc.edu.cn/archlinux/$arch
+```
+
+2. `sudo pacman -S archlinuxcn-keyring`
+
+3. `sudo pacman -S paru`
+
+4. 安装 Dae
+最新稳定版（针对 x86-64 v3/AVX2 优化）
+
+```Shell
+[yay/paru] -S dae-avx2-bin
+```
+
+最新稳定版（x86-64 或 aarch64 通用版）
+
+```Shell
+[yay/paru] -S dae
+```
+
+<details>
+<summary>我的 Dae 配置</summary>
+  
+  编辑 /etc/dae/config.dae
+
+  ```Shell
+  global {
+    tproxy_port: 10307
+    tproxy_port_protect: true
+    pprof_port: 0
+    so_mark_from_dae: 0
+    log_level: info
+    disable_waiting_network: false
+    enable_local_tcp_fast_redirect: false
+    #lan_interface: docker0
+    wan_interface: auto
+    auto_config_kernel_parameter: true
+    tcp_check_url: 'http://cp.cloudflare.com,1.1.1.1,2606:4700:4700::1111'
+    tcp_check_http_method: HEAD
+    udp_check_dns: 'dns.google:53,8.8.8.8,2001:4860:4860::8888'
+    check_interval: 30s
+    check_tolerance: 50ms
+    dial_mode: domain
+    allow_insecure: false
+    sniffing_timeout: 100ms
+    tls_implementation: tls
+    utls_imitate: chrome_auto
+    mptcp: false
+    bandwidth_max_tx: '200 mbps'
+    bandwidth_max_rx: '1 gbps'
+  }
+
+  subscription {
+    '这里填你的订阅链接'
+  }
+
+  dns {
+    upstream {
+      alidns: 'udp://dns.alidns.com:53'
+      googledns: 'tcp+udp://dns.google:53'
+    }
+    routing {
+      request {
+        qname(geosite:cn) -> alidns
+        fallback: googledns
+      }
+    }
+  }
+
+  group {
+    proxy {
+      filter: name(keyword: '美国')
+      policy: min_moving_avg
+    }
+  }
+
+  routing {
+    pname(NetworkManager) -> direct
+    dip(224.0.0.0/3, 'ff00::/8') -> direct
+    dip(geoip:private) -> direct
+    l4proto(udp) && dport(443) -> block
+    dip(geoip:cn) -> direct
+    domain(geosite:cn) -> direct
+    fallback: proxy
+  }
+  ```
+
+</details>
+
 ## Application
-**基础：** Hyprland, Waybar, Fuzzel
 
-**消息通知：** mako
+如果想要完整的使用配置需安装这些。
 
-**截图：** grim, slurg, wl-clipboard
+|   程序                 |   名字         |
+|:----------------------:|----------------|
+| Window Manager         | Hyprland       |
+| Terminal               | alacritty      |
+| Shell                  | Fish           |
+| Shell Framework        | Oh-My-Fish     |
+| Bar                    | waybar         |
+| Application Launcher   | fuzzel         |
+| Notification Daemon    | Mako           |
+| Input method framework | Fcitx5         |
+| Clipboard              | wl-clipboard   |
+| Screenshot             | grim, slurp    |
 
 ## Keybinds
+
 你可以在 `~/.config/hypr/configs/keybinds.conf` 里找到并修改。
 
 | 基础按键      | 说明                    |
@@ -30,7 +185,6 @@
 | Super + Left  | 窗口宽度 - 50           |
 | Super + Q     | 打开特殊工作区          |
 | Super + Shift + Q | 将窗口转到特殊工作区|
-
 
 | 拓展功能按键    | 说明                   |
 |-----------------|------------------------|
